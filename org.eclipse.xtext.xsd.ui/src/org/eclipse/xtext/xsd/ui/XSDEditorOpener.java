@@ -6,9 +6,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor;
+import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xtext.ui.editor.LanguageSpecificURIEditorOpener;
-import org.eclipse.xtext.util.ITextRegion;
-
 import com.google.inject.Inject;
 
 @SuppressWarnings("restriction")
@@ -21,16 +20,17 @@ public class XSDEditorOpener extends LanguageSpecificURIEditorOpener {
 	protected void selectAndReveal(IEditorPart openEditor, URI uri, EReference crossReference, int indexInList,
 			boolean select) {
 		final InternalXSDMultiPageEditor xsdEditor = openEditor.getAdapter(InternalXSDMultiPageEditor.class);
-		final EObject eObject = xsdEditor.getXSDSchema().eResource().getEObject(uri.fragment());
-		final ITextRegion location = getLocationProvider().getSignificantTextRegion(eObject);
-
-		if (select) {
-			workbench.getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					xsdEditor.getTextEditor().selectAndReveal(location.getOffset(), location.getLength());
-				}
-			});
+		if (xsdEditor != null && select) {
+			final EObject eObject = xsdEditor.getXSDSchema().eResource().getEObject(uri.fragment());
+			if (eObject instanceof XSDConcreteComponent) {
+				final XSDConcreteComponent xsdComponent = (XSDConcreteComponent) eObject;
+				workbench.getDisplay().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						xsdEditor.openOnGlobalReference(xsdComponent);
+					}
+				});
+			}
 		}
 
 	}
