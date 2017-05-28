@@ -4,14 +4,10 @@ Bundle-Name: Xtext XSD Support UI
 Bundle-SymbolicName: org.eclipse.xtext.xsd.ui;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.eclipse.xtext.xsd.ui.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- com.google.inject,
- org.eclipse.xtext.ui,
+Require-Bundle: org.eclipse.xtext.ui,
  org.eclipse.xsd.edit,
  org.eclipse.xtext.ui.shared,
- org.eclipse.wst.xsd.ui,
- org.eclipse.wst.sse.ui
+ org.eclipse.wst.xsd.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j,

@@ -12,6 +12,6 @@ public class XSDUiModule extends EmfUiModule {
  
     @Override
     public void configureLanguageSpecificURIEditorOpener(com.google.inject.Binder binder) {
-        binder.bind(IURIEditorOpener.class).annotatedWith(LanguageSpecific.class).to(XSDEditorOpener.class);
-    }
+		binder.bind(IURIEditorOpener.class).annotatedWith(LanguageSpecific.class).to(XSDEditorOpener.class);
+	}
 }
