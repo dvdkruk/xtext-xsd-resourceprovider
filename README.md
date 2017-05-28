@@ -7,17 +7,30 @@ Two projects to make XSD references possible in your Xtext grammar. This project
 - Eclipse XML Schema Editor
 
 ## How To Use
-- Import __org.eclipse.xtext.xsd__ and __org.eclipse.xtext.xsd.ui__ into your workspace. 
-- Add the following lines to the __StandaloneSetup__ in your .mwe2 file:
-```ruby
-registerGeneratedEPackage = "org.eclipse.xsd.XSDPackage"
-registerGenModelFile = "platform:/resource/org.eclipse.xsd/model/XSD.genmodel"
+- Import the __org.eclipse.xtext.xsd__ and __org.eclipse.xtext.xsd.ui__ projects into your workspace.
+- Add the following required bundles to the __MANIFEST.MF__ of your core Xtext DSL project:
 ```
-- Add the following line to your Xtext grammar file (.xtext):
+org.eclipse.xtext.xsd,
+org.eclipse.xtext.xsd.ui,
+org.eclipse.xsd
+```
+- Add the following lines to your .mwe2 generate file:
+```ruby
+Workflow {
+  bean = org.eclipse.emf.mwe.utils.StandaloneSetup {
+    scanClassPath = true
+    platformUri = rootPath
+    registerGeneratedEPackage = "org.eclipse.xsd.XSDPackage"
+    registerGenModelFile = "platform:/resource/org.eclipse.xsd/model/XSD.genmodel"
+  }
+}
+```
+- Add the following import to your Xtext grammar file (.xtext):
 ```ruby
 import "http://www.eclipse.org/xsd/2002/XSD" as xsd
 ```
-- Now your Xtext can use references to elments defined in XSD files. For example the following rule is now possible:
+__Note:__ Imports should be added between the grammar and generate declarations.
+- Now your Xtext DSL can reference to elements defined in XSD files. For example, the following rule is now possible:
 ```ruby
 TypeInstance:
   'instance' name=ID ':' type=[xsd::XSDTypeDefinition|QN];
